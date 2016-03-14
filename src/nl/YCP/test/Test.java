@@ -3,11 +3,30 @@ package nl.YCP.test;
 import java.util.Scanner;
 
 public class Test {
+	
+	static void quit() {
+		System.out.println("Are you sure you want to quit? (y/n)");
+		Scanner s = new Scanner(System.in);
+		if (s.next().equals("y")) {
+			System.exit(0);
+		} else if (s.next().equals("n")) {
+			return;
+		} else {
+			System.out.println("Invalid input");
+			return;
+		}
+	}
+	
 	static int askValue(String variable) {
 		System.out.println("Enter " + variable + " please.");
 		Scanner s = new Scanner(System.in);
+		String command = s.next();
+		if (command.equals("quit")) {
+			quit();
+			return 0;
+		}
 		try {
-			int value = Integer.valueOf(s.next());
+			int value = Integer.valueOf(command);
 			if (value > 0 && value < 11) {
 				return value;
 			} else {
@@ -26,7 +45,7 @@ public class Test {
 		int number = 0;
 		
 		while (number == 0) 
-			number = askValue("number of inputs");
+			number = askValue("number of inputs or quit");
 
 				
 		int[] values = new int[number];
