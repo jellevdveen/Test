@@ -21,7 +21,6 @@ public class Test {
 	}
 	
 	public static void main(String[] args) {
-		//  dit is een test 2 hallo
 		int result = 0;
 		int number = 0;
 		
