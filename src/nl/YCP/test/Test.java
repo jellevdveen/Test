@@ -7,9 +7,10 @@ public class Test {
 	static void quit() {
 		System.out.println("Are you sure you want to quit? (y/n)");
 		Scanner s = new Scanner(System.in);
-		if (s.next().equals("y")) {
+		String answer = s.next();
+		if (answer.equals("y")) {
 			System.exit(0);
-		} else if (s.next().equals("n")) {
+		} else if (answer.equals("n")) {
 			return;
 		} else {
 			System.out.println("Invalid input");
