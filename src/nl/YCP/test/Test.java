@@ -22,6 +22,7 @@ public class Test {
 	
 	public static void main(String[] args) {
 		int result = 0;
+		int largest = 0;
 		int number = 0;
 		
 		while (number == 0) 
@@ -40,9 +41,12 @@ public class Test {
 		for (int i : values) {
 			if (i > 7)
 			result++;
+			if (i > largest)
+			largest = i;
 		}
 	
 		System.out.println(result + " of these numbers are larger than 7");
+		System.out.println("The largest of the numbers you entered is " + largest);
 	}
 }
 
