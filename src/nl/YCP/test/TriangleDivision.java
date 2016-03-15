@@ -18,7 +18,7 @@ public class TriangleDivision {
 	public static void main(String[] args) {
 		int triangle = 1;
 		int number = 1;
-		while (!divisionTest(triangle, 600)) {
+		while (!divisionTest(triangle, 500)) {
 			do {
 				number++;
 				triangle += number;
