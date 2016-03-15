@@ -17,7 +17,7 @@ public class Pyramid {
 		     		{17, 47, 82},
 		     		{18, 35, 87, 10}};
 		
-		boolean[][] path = new boolean[b.length-1][];
+		boolean[][] path = new boolean[b.length - 1][];
 		int[][] testArray = new int[b.length][];
 		
 		testArray[b.length - 1] = b[b.length -1].clone();
@@ -35,6 +35,14 @@ public class Pyramid {
 		}
 		
 		System.out.println(testArray[0][0]);
+		
+		int xcounter = 0;
+		for (int i = 0; i < b.length; i++){
+			System.out.println(b[i][xcounter]);
+			if ((i < path.length) && (path[i][xcounter])) {
+				xcounter++;				
+			}
+		}
 		
 		
 	}
