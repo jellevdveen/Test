@@ -1,6 +1,15 @@
 package nl.YCP.test;
 
 public class Pyramid {
+	private static int[] higherLayer(int[] bottomlayer, int[] toplayer) {
+		int[] returnLayer = new int[toplayer.length];
+		for (int i = bottomlayer.length - 2; i >= 0; i--) {
+			returnLayer[i] = toplayer[i] + Math.max(bottomlayer[i], bottomlayer[i+1]);
+		}
+		return returnLayer;
+	}
+	
+	
 	public static void main(String[] args) {
 
 		int[][] b = {{75},
@@ -8,25 +17,25 @@ public class Pyramid {
 		     		{17, 47, 82},
 		     		{18, 35, 87, 10}};
 		
-		int[][] c = b.clone(); 
+		boolean[][] path = new boolean[b.length-1][];
+		int[][] testArray = new int[b.length][];
+		
+		testArray[b.length - 1] = b[b.length -1].clone();
+		
+		for (int i = 0; i < path.length; i++) {
+			path[i] = new boolean[i+1];
+		}
+			
 		
 		for (int i = b.length - 1 ; i >= 0; i--) {
 			for (int j = b[i].length - 2; j >= 0; j--){
-				b[i-1][j] += Math.max(b[i][j], b[i][j+1]);
+				path[i - 1][j] = (testArray[i][j + 1] > testArray[i][j]);
+				testArray[i-1] = higherLayer(testArray[i], b[i-1]);
 			}
 		}
-		System.out.println(b[0][0]);
 		
-		int xcounter = 0;
+		System.out.println(testArray[0][0]);
 		
-		System.out.println(c[0][0]);
-		for (int i = 1; i < b.length; i++) {
-			if (b[i][xcounter] > b[i][xcounter + 1]) {
-				System.out.println(c[i][xcounter]);
-			} else {
-				System.out.println(c[i][xcounter + 1]);
-				xcounter++;
-			}
-		}
+		
 	}
 }
