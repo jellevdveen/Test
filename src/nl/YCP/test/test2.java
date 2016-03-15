@@ -7,10 +7,10 @@ import java.util.Scanner;
 
 public class test2 {
 
-	public static void main(String[] args) {
+	public static int[][] getFromFile(String filename) {
 		int[][] numbers;
 		try {
-			Scanner s = new Scanner(new File("Array.txt"));
+			Scanner s = new Scanner(new File(filename));
 			ArrayList<String[]> stringNumbers = new ArrayList<>();
 			while (s.hasNext()) {
 				stringNumbers.add(0, s.nextLine().split(" "));
@@ -22,20 +22,11 @@ public class test2 {
 					numbers[i][j] = Integer.valueOf(stringNumbers.get(i)[j]);
 				}
 			}
-			for (int i = 0; i < numbers.length; i++) {
-				for (int j = 0; j < numbers[i].length; j++){
-					System.out.println(numbers[i][j]);
-				}
-			}
+			return numbers;
 				
 		} catch (FileNotFoundException fnfe) {
 			fnfe.printStackTrace();
+			return new int[0][0];
 		} 
-		
-		
-		
-		
-		
-		
 	}
 }

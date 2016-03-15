@@ -12,10 +12,8 @@ public class Pyramid {
 	
 	public static void main(String[] args) {
 
-		int[][] b = {{75},
-		     		{95, 64},
-		     		{17, 47, 82},
-		     		{18, 35, 87, 10}};
+		int[][] b = test2.getFromFile("Array.txt");
+
 		
 		boolean[][] path = new boolean[b.length - 1][];
 		int[][] testArray = new int[b.length][];
