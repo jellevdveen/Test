@@ -2,13 +2,13 @@ package nl.YCP.test;
 
 public class TriangleDivision {
 
-	private static boolean divisionTest(int i) {
+	private static boolean divisionTest(int i, int divisors) {
 		int counter = 0;
 		for (int j = 1; j <= i; j++){
 			if (i % j == 0)
 				counter++;
 		}
-		if (counter > 500) {
+		if (counter >= divisors) {
 			return true;
 		} else {
 			return false;
@@ -16,11 +16,15 @@ public class TriangleDivision {
 	}
 	
 	public static void main(String[] args) {
-		int triangle = 0;
-		int number = 0;
-		while (!divisionTest(triangle)) {
-			number++;
-			triangle += number;
+		int triangle = 1;
+		int number = 1;
+		while (!divisionTest(triangle, 600)) {
+			do {
+				number++;
+				triangle += number;
+			} while (triangle % 420 != 0);
+			System.out.println(number);
 		}
+		System.out.println("waarde is " + number + " " + triangle);
 	}
 }
