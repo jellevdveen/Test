@@ -12,7 +12,7 @@ public class Pyramid {
 	
 	public static void main(String[] args) {
 
-		int[][] b = test2.getFromFile("Array.txt");
+		int[][] b = test2.getFromFile("Triangle.txt");
 
 
 		boolean[][] path = new boolean[b.length - 1][];
