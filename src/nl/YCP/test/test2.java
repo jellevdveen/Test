@@ -17,8 +17,12 @@ public class test2 {
 				for (int i = 0; i <= stringNumbers.size(); i++){
 					String[] b = new String[stringNumbers.size() + 1];
 					b[i] = s.next();
-					if (i == stringNumbers.size())
+					System.out.println(b[i]);
+					if (i == stringNumbers.size()) {
 						stringNumbers.add(b);
+						break;
+					}
+						
 				}
 				
 			}
