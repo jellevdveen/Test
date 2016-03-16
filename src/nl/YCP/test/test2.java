@@ -11,9 +11,16 @@ public class test2 {
 		int[][] numbers;
 		try {
 			Scanner s = new Scanner(new File(filename));
-			ArrayList<String[]> stringNumbers = new ArrayList<>();
+			ArrayList<String[]> stringNumbers = new ArrayList<>(0);
 			while (s.hasNext()) {
-				stringNumbers.add(s.nextLine().split(" "));
+				
+				for (int i = 0; i <= stringNumbers.size(); i++){
+					String[] b = new String[stringNumbers.size() + 1];
+					b[i] = s.next();
+					if (i == stringNumbers.size())
+						stringNumbers.add(b);
+				}
+				
 			}
 			numbers = new int[stringNumbers.size()][];
 			for (int i = 0; i < numbers.length; i++) {
