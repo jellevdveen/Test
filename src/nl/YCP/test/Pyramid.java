@@ -14,7 +14,7 @@ public class Pyramid {
 
 		int[][] b = test2.getFromFile("Array.txt");
 
-		
+
 		boolean[][] path = new boolean[b.length - 1][];
 		int[][] testArray = new int[b.length][];
 		

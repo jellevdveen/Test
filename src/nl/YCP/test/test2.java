@@ -13,7 +13,7 @@ public class test2 {
 			Scanner s = new Scanner(new File(filename));
 			ArrayList<String[]> stringNumbers = new ArrayList<>();
 			while (s.hasNext()) {
-				stringNumbers.add(0, s.nextLine().split(" "));
+				stringNumbers.add(s.nextLine().split(" "));
 			}
 			numbers = new int[stringNumbers.size()][];
 			for (int i = 0; i < numbers.length; i++) {
