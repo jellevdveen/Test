@@ -52,6 +52,7 @@ public class Lingo {
 				System.out.println(Lingo.actieveTeam.getKaart());
 				for (int bal = 0; bal < 2; bal++) {
 					System.out.println(Lingo.actieveTeam + ", jullie mogen nog " + (2-bal) + " ballen pakken!");
+					System.out.println("PUBLIEK: 'Groen, Groen, Groen'");
 					Lingo.pause(2000);
 					System.out.println("Voer iets in om een bal te pakken");
 					while (!scanner.hasNext()) {}
