@@ -11,12 +11,14 @@ public class Lingo {
 	private static final int AANTAL_KEER_RADEN = 5;
 	private static ArrayList<String> woordenLijst = new ArrayList<String>();
 	private static Team actieveTeam;
+	private static int finaleCounter;
 	
 	
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
+		Scanner scanner2 = null;
 		try {
-			Scanner scanner2 = new Scanner(new File("Lingo.txt"));
+			scanner2 = new Scanner(new File("Lingo.txt"));
 			while (scanner2.hasNext()) {
 				Lingo.woordenLijst.add(scanner2.next());
 			}
@@ -24,6 +26,9 @@ public class Lingo {
 		} catch (FileNotFoundException FNFE) {
 			System.out.println("Bronbestand niet gevonden!");
 			return;
+		} finally {
+			scanner2.close();
+			
 		}
 		
 		
@@ -43,7 +48,7 @@ public class Lingo {
 			Lingo.pause(1000);
 			System.out.println("\n" + Lingo.actieveTeam + " is aan de beurt!\n");
 			
-			boolean geraden = speelLingo(woordenLijst.get(0), scanner, team1, team2);
+			boolean geraden = speelLingo(woordenLijst.remove(0), scanner, team1, team2);
 		
 			if (geraden) {
 				System.out.println("Dat is goed!!\n" + Lingo.actieveTeam + " krijgt er 25 punten bij!\n\n");
@@ -52,7 +57,7 @@ public class Lingo {
 				System.out.println(Lingo.actieveTeam.getKaart());
 				for (int bal = 0; bal < 2; bal++) {
 					System.out.println(Lingo.actieveTeam + ", jullie mogen nog " + (2-bal) + " ballen pakken!");
-					System.out.println("PUBLIEK: 'Groen, Groen, Groen'");
+					System.out.println("PUBLIEK: \"Groen! Groen! Groen!\"");
 					Lingo.pause(2000);
 					System.out.println("Voer iets in om een bal te pakken");
 					while (!scanner.hasNext()) {}
@@ -87,10 +92,14 @@ public class Lingo {
 				
 		System.out.println("Het spel is afgelopen,");
 		if (team1.getScore() > team2.getScore()) {
-			System.out.println("Team 1 heeft gewonnen met " + team1.getScore() + " punten.");
+			actieveTeam = team1;
 		} else {
-			System.out.println("Team 2 heeft gewonnen met " + team2.getScore() + " punten.");
+			actieveTeam = team2;
 		}
+		System.out.println(actieveTeam + " heeft gewonnen met " + team1.getScore() + " punten.\nWe zien jullie terug in de Finale.\n***Podium draait om***");
+		Lingo.pause(2000);
+		
+		finale(actieveTeam, scanner);
 		
 		scanner.close();
 	}
@@ -102,30 +111,8 @@ public class Lingo {
 		inputWoord = inputWoord.toLowerCase();
 		
 
-		for (int i = 0; i < AANTAL_KEER_RADEN; i++) {
-			System.out.println(Lingo.actieveTeam + ", Raad een woord:");
-			
-			
-			String geradenWoord = scanner.next().toLowerCase();
-
-			if (geradenWoord.equals(inputWoord)) {
-				return true;
-			} else if (geradenWoord.length() != inputWoord.length()) {
-				System.out.println("Geen " + inputWoord.length() + "-letterig woord");
-				continue;
-			}  else if (!testWoord(geradenWoord)) {
-				System.out.println("Woord bevat ongeldige karakters");
-				continue;
-			} else {
-				char[] testWord = (evaluateWord(inputWoord, geradenWoord)).toCharArray();
-				for (int j = 0; j < inputWoord.length(); j++) {
-					System.out.print(testWord[j]);
-					if (j == (inputWoord.length() - 1)) {
-						System.out.println();
-					}
-					Lingo.pause(500);
-				}
-			}
+		if (speelRonde(scanner, inputWoord)) {
+			return true;
 		}
 		
 		if (Lingo.actieveTeam == team1) {
@@ -200,5 +187,72 @@ public class Lingo {
 		} catch (InterruptedException IE) {
 			System.out.println("AAAAA.... Error!!");					
 		}
+	}
+
+	public static void finale(Team actieveTeam, Scanner scanner) {
+		actieveTeam.beginFinale();
+		for (int i = 0; i < 5; i++) {
+			if (!speelRonde(scanner, woordenLijst.remove(0))) {
+				finaleCounter = 6;			
+			}
+			outer:
+			for (int j = 0; j < finaleCounter; j++) {
+				System.out.println("Jullie moeten nog " + (finaleCounter - j) + " ballen pakken!");
+				int result = actieveTeam.pakFinaleBal();
+				System.out.println(actieveTeam.getKaart());
+				
+				switch (result) {
+				case 0	:	break outer;
+				case 1	:	System.out.println("Helaas, Lingo.... Jullie mogen de volgende keer terugkomen.");
+							return;
+				case 2	:	continue;
+				}
+			}
+			if (i != 4) {
+				System.out.println("Jullie prijs staat nu op " + actieveTeam.addToScore(actieveTeam.getScore()) + " punten.");
+				System.out.println("Jullie kunnen stoppen of doorgaan voor " + (actieveTeam.getScore() * 2) + " punten");
+				System.out.println("Voer D in om door te gaan");
+				if (!scanner.next().equalsIgnoreCase("d")) {
+					System.out.println("Jullie gaan naar huis met " + actieveTeam.getScore() + " punten!");
+					return;
+				}
+			} else {
+				System.out.println("Jullie hebben gewonnen en gaan naar huis met " + actieveTeam.addToScore(actieveTeam.getScore()));
+			}
+		}
+		
+		
+		
+	}
+	
+	public static boolean speelRonde(Scanner scanner, String inputWoord) {
+		finaleCounter = 0;
+		for (int i = 0; i < AANTAL_KEER_RADEN; i++) {
+			finaleCounter++;
+			System.out.println(Lingo.actieveTeam + ", Raad een woord:");
+			
+			
+			String geradenWoord = scanner.next().toLowerCase();
+
+			if (geradenWoord.equals(inputWoord)) {
+				return true;
+			} else if (geradenWoord.length() != inputWoord.length()) {
+				System.out.println("Geen " + inputWoord.length() + "-letterig woord");
+				continue;
+			}  else if (!testWoord(geradenWoord)) {
+				System.out.println("Woord bevat ongeldige karakters");
+				continue;
+			} else {
+				char[] testWord = (evaluateWord(inputWoord, geradenWoord)).toCharArray();
+				for (int j = 0; j < inputWoord.length(); j++) {
+					System.out.print(testWord[j]);
+					if (j == (inputWoord.length() - 1)) {
+						System.out.println();
+					}
+					Lingo.pause(500);
+				}
+			}
+		}
+		return false;
 	}
 }

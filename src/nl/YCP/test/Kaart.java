@@ -6,7 +6,7 @@ import java.util.Collections;
 
 
 public class Kaart {
-	private int[][] actieveKaart;
+	protected int[][] actieveKaart;
 	
 	public Kaart(boolean even) {
 		actieveKaart = new int[5][5];

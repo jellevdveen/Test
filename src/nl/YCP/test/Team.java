@@ -34,7 +34,6 @@ public class Team {
 	
 	
 	public int addToScore(int i) {
-		
 		return (this.score += i);
 	}
 	
@@ -46,6 +45,7 @@ public class Team {
 		int gepakteBal = teamBak.trekBal(s);
 		switch (gepakteBal) {
 		case 0		: 	System.out.println("Ach wat jammer, een rode bal!");
+						System.out.println("Publiek \"Ahhhhhhhhhhh\"");
 						Lingo.pause(1000);
 						return 0;
 		case 1		: 	System.out.println("Groene bal!!!");
@@ -106,5 +106,26 @@ public class Team {
 
 	public Kaart getKaart() {
 		return teamKaart;
+	}
+
+	
+	public void beginFinale() {
+		teamKaart = new FinaleKaart(team1);
+		teamKaart.streepBeginWeg();
+		teamBak = new FinaleBallenBak(team1);
+	}
+	
+	public int pakFinaleBal() {
+		int gepakteBal = ((FinaleBallenBak)teamBak).trekFinaleBal();
+		switch (gepakteBal) {
+		case -1 :	return 0;
+		default	:	teamKaart.streepWeg(gepakteBal);
+					System.out.println("Het is bal " + gepakteBal);
+		}
+		if (teamKaart.checkLingo()) {
+			return 1;
+		} else {
+			return 2;
+		}
 	}
 }

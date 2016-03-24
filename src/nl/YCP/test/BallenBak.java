@@ -5,7 +5,11 @@ import java.util.Collections;
 import java.util.Scanner;
 
 public class BallenBak {
-	private ArrayList<Integer> ballenInBak;
+	protected ArrayList<Integer> ballenInBak;
+	
+	public BallenBak() {
+		ballenInBak = new ArrayList<Integer>(36);
+	}
 	
 	public BallenBak(ArrayList<Integer> ballenBakLijst) {
 		ballenInBak = new ArrayList<Integer>(24);
