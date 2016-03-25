@@ -56,19 +56,7 @@ public class Kaart {
 				}
 			}
 		}
-		System.out.println("Staat niet op de kaart!");
-	}
-	
-	public boolean checkLingo() {
-		for(int j = 0; j < 5; j++) {
-			if (((actieveKaart[0][j] + actieveKaart[1][j] + actieveKaart[2][j] + actieveKaart[3][j] + actieveKaart[4][j]) == 0) ||
-				((actieveKaart[j][0] + actieveKaart[j][1] + actieveKaart[j][2] + actieveKaart[j][3] + actieveKaart[j][4]) == 0) ||
-				((actieveKaart[0][0] + actieveKaart[1][1] + actieveKaart[2][2] + actieveKaart[3][3] + actieveKaart[4][4]) == 0) ||
-				((actieveKaart[0][4] + actieveKaart[1][3] + actieveKaart[2][2] + actieveKaart[3][1] + actieveKaart[4][0]) == 0)) {
-				return true;
-			}
-		}
-		return false;
+		System.out.println("Staat niet op de kaart!\n");
 	}
 	
 	public ArrayList<Integer> getNumbers() {
@@ -83,21 +71,5 @@ public class Kaart {
 		return tempList;
 	}
 	
-	@Override
-	public String toString() {
-		StringBuilder tempString = new StringBuilder("");
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 5; j++) {
-				if (actieveKaart[i][j] == 0) {
-					tempString.append("XX ");
-				} else {
-					tempString.append(actieveKaart[i][j] + " ");
-				}
-			}
-			tempString.append("\n");
-		}
-		
-		return tempString.toString();
-		
-	}
+
 }

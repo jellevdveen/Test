@@ -51,8 +51,10 @@ public class Team {
 		case 1		: 	System.out.println("Groene bal!!!");
 						this.groeneBallen += 1;
 						if (this.groeneBallen == 3) {
-							System.out.println("Dat is de derde groene bal!!!\nJullie winnen de jackpot van 0 euro!");
+							System.out.println("Dat is de derde groene bal!!!\nJullie winnen de jackpot van 100 punten!");
+							this.addToScore(100);
 							this.groeneBallen = 0;
+							teamBak.addBallen(1, 3);
 						}
 						return 1;
 		default		:	System.out.println("Het is bal " + gepakteBal);
@@ -70,10 +72,11 @@ public class Team {
 	
 	private void lingoGemaakt() {
 		System.out.println("En dat is Lingoooooo!!!!");
+		System.out.println("***Publiek gaat wild tekeer!***");
 		if (this.team1) {
-			System.out.println("Honderd punten erbij voor team 1");
+			System.out.println("Honderd punten erbij voor team 1\n");
 		} else {
-			System.out.println("Honderd punten erbij voor team 2");
+			System.out.println("Honderd punten erbij voor team 2\n");
 		}
 		this.score += 100;
 		
@@ -89,8 +92,9 @@ public class Team {
 		Lingo.pause(2000);
 		
 		System.out.println("We gooien de oude ballen eruit...");
-		Lingo.pause(5000);
+		Lingo.pause(1000);
 		System.out.println("...en de nieuwe erin! ");
+		Lingo.pause(1000);
 		
 		teamBak.vulBallenBak(teamKaart.getNumbers(), (3 - this.groeneBallen));
 	}
@@ -123,7 +127,9 @@ public class Team {
 	public int pakFinaleBal() {
 		int gepakteBal = ((FinaleBallenBak)teamBak).trekFinaleBal();
 		switch (gepakteBal) {
-		case -1 :	return 0;
+		case -1 :	System.out.println("De gouden bal!\nJullie hoeven deze ronde geen ballen meer te pakken");
+					teamBak.addBallen(1, -1);
+					return 0;
 		default	:	System.out.println("Het is bal " + gepakteBal);
 					teamKaart.streepWeg(gepakteBal);
 					Lingo.pause(1000);

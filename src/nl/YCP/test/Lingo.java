@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.Scanner;
 
 public class Lingo {
-	private static final int AANTAL_WOORDEN = 1;
+	private static final int AANTAL_WOORDEN = 10;
 	private static final int AANTAL_KEER_RADEN = 5;
 	private static ArrayList<String> woordenLijst = new ArrayList<String>();
 	private static Team actieveTeam;
@@ -65,7 +65,7 @@ public class Lingo {
 					scanner.next();
 					int scenario = Lingo.actieveTeam.pakBal(scanner);
 					switch (scenario) {
-					case 0	:	System.out.println("De beurt gaat naar het andere team");
+					case 0	:	System.out.println("De beurt gaat naar het andere team\n");
 								if (Lingo.actieveTeam == team1) {
 									Lingo.actieveTeam = team2;
 								} else {
@@ -73,7 +73,7 @@ public class Lingo {
 								}
 								bal = 2;
 								break;
-					case 1	:	System.out.println("Jullie mogen nog een extra bal pakken!");
+					case 1	:	System.out.println("Jullie mogen nog een extra bal pakken!\n");
 								bal--;
 								break;
 					}
@@ -82,7 +82,7 @@ public class Lingo {
 			} 
 			
 			System.out.println("De score is nu team 1: " + team1.getScore() + " punten");
-			System.out.println("               team 2: " + team2.getScore() + " punten");
+			System.out.println("               team 2: " + team2.getScore() + " punten\n");
 			
 			Lingo.pause(2000);
 			
@@ -112,7 +112,7 @@ public class Lingo {
 		inputWoord = inputWoord.toLowerCase();
 		
 
-		if (speelRonde(scanner, inputWoord)) {
+		if (speelRonde(scanner, inputWoord, team1, team2)) {
 			return true;
 		}
 		
@@ -194,7 +194,7 @@ public class Lingo {
 		actieveTeam.beginFinale();
 		for (int i = 0; i < 5; i++) {
 			String inputWoord = woordenLijst.remove(0);
-			if (!speelRonde(scanner, inputWoord)) {
+			if (!speelRonde(scanner, inputWoord, actieveTeam, actieveTeam)) {
 				finaleCounter = 6;
 				System.out.println("Helaas, ook niet geraden.\nHet woord was " + inputWoord.toUpperCase());
 			} else {
@@ -222,11 +222,10 @@ public class Lingo {
 								Scanner s = new Scanner(new File("LingoScores.txt"));
 								String[] highscore = s.nextLine().split("-");
 								s.close();
-								System.out.println("Highscore is " + highscore[0] + " punten van " + highscore[1]);
+								System.out.println("Highscore is " + highscore[1] + " punten van " + highscore[0]);
 							} catch (FileNotFoundException FNFE) {
 								System.out.println("Highscore-lijst niet gevonden!");
 							}
-							
 							return;
 				case 2	:	continue;
 				}
@@ -234,7 +233,7 @@ public class Lingo {
 			if (i != 4) {
 				System.out.println("Jullie prijs staat nu op " + actieveTeam.addToScore(actieveTeam.getScore()) + " punten.");
 				System.out.println("Jullie kunnen stoppen of doorgaan voor " + (actieveTeam.getScore() * 2) + " punten");
-				System.out.println("Voer D in om door te gaan");
+				System.out.println("Voer D in om door te gaan, of iets anders om te stoppen!");
 				if (!scanner.next().equalsIgnoreCase("d")) {
 					System.out.println("Jullie gaan naar huis met " + actieveTeam.getScore() + " punten!");
 					String[] highscore = new String[2];
@@ -244,9 +243,9 @@ public class Lingo {
 						s.close();
 						if (actieveTeam.getScore() > Integer.valueOf(highscore[1])) {
 							try{ 
-								PrintWriter writer = new PrintWriter("LingoScores", "UTF-8");
+								PrintWriter writer = new PrintWriter("LingoScores.txt", "UTF-8");
 								System.out.println("Highscore!, voer je naam in!");
-								writer.println(scanner.next() + "-" + actieveTeam.getScore());
+								writer.println(scanner.next().replaceAll("-", " ") + "-" + actieveTeam.getScore());
 								writer.close();
 							} catch (UnsupportedEncodingException UCE) {
 								System.out.println("Onbekende Error!");
@@ -273,8 +272,9 @@ public class Lingo {
 		
 	}
 	
-	public static boolean speelRonde(Scanner scanner, String inputWoord) {
+	public static boolean speelRonde(Scanner scanner, String inputWoord, Team team1, Team team2) {
 		finaleCounter = 0;
+		System.out.println("De beginletter is: " + inputWoord.toUpperCase().charAt(0));
 		for (int i = 0; i < AANTAL_KEER_RADEN; i++) {
 			finaleCounter++;
 			System.out.println(Lingo.actieveTeam + ", Raad een woord:");
@@ -285,10 +285,28 @@ public class Lingo {
 			if (geradenWoord.equals(inputWoord)) {
 				return true;
 			} else if (geradenWoord.length() != inputWoord.length()) {
-				System.out.println("Geen " + inputWoord.length() + "-letterig woord");
+				System.out.println("Geen " + inputWoord.length() + "-letterig woord!");
+				if (Lingo.actieveTeam == team1) {
+					Lingo.actieveTeam = team2;
+				} else {
+					Lingo.actieveTeam = team1;
+				}
 				continue;
 			}  else if (!testWoord(geradenWoord)) {
-				System.out.println("Woord bevat ongeldige karakters");
+				System.out.println("Woord bevat ongeldige karakters!");
+				if (Lingo.actieveTeam == team1) {
+					Lingo.actieveTeam = team2;
+				} else {
+					Lingo.actieveTeam = team1;
+				}
+				continue;
+			} else if (inputWoord.charAt(0) != (geradenWoord.charAt(0))) {
+				System.out.println("Verkeerde beginletter!");
+				if (Lingo.actieveTeam == team1) {
+					Lingo.actieveTeam = team2;
+				} else {
+					Lingo.actieveTeam = team1;
+				}
 				continue;
 			} else {
 				char[] testWord = (evaluateWord(inputWoord, geradenWoord)).toCharArray();

@@ -18,7 +18,11 @@ public class BallenBak {
 	
 	
 	public void vulBallenBak(ArrayList<Integer> ballenBakLijst, int aantalGroene) {
-		ballenInBak.addAll(ballenBakLijst);
+		for (Integer bal : ballenBakLijst) {	
+			if (bal != 0) {
+				ballenInBak.add(bal);
+			}
+		}
 		for (int i = 0; i < 3; i++) {
 			ballenInBak.add(0);
 			if (i < aantalGroene) {
@@ -45,5 +49,12 @@ public class BallenBak {
 			}
 		}
 		return bal;
+	}
+	
+	public void addBallen(int aantal, int soort) {
+		for (int i = 0; i < aantal; i++) {
+			ballenInBak.add(soort);
+		}
+		Collections.shuffle(ballenInBak);
 	}
 }
