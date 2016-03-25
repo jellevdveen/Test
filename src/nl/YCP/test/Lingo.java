@@ -2,12 +2,14 @@ package nl.YCP.test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
 public class Lingo {
-	private static final int AANTAL_WOORDEN = 10;
+	private static final int AANTAL_WOORDEN = 1;
 	private static final int AANTAL_KEER_RADEN = 5;
 	private static ArrayList<String> woordenLijst = new ArrayList<String>();
 	private static Team actieveTeam;
@@ -28,7 +30,6 @@ public class Lingo {
 			return;
 		} finally {
 			scanner2.close();
-			
 		}
 		
 		
@@ -58,7 +59,7 @@ public class Lingo {
 				for (int bal = 0; bal < 2; bal++) {
 					System.out.println(Lingo.actieveTeam + ", jullie mogen nog " + (2-bal) + " ballen pakken!");
 					System.out.println("PUBLIEK: \"Groen! Groen! Groen!\"");
-					Lingo.pause(2000);
+					Lingo.pause(500);
 					System.out.println("Voer iets in om een bal te pakken");
 					while (!scanner.hasNext()) {}
 					scanner.next();
@@ -83,7 +84,7 @@ public class Lingo {
 			System.out.println("De score is nu team 1: " + team1.getScore() + " punten");
 			System.out.println("               team 2: " + team2.getScore() + " punten");
 			
-			Lingo.pause(3000);
+			Lingo.pause(2000);
 			
 			if ((i == AANTAL_WOORDEN - 1) && (team1.getScore() == team2.getScore())) {
 				i--;
@@ -96,7 +97,7 @@ public class Lingo {
 		} else {
 			actieveTeam = team2;
 		}
-		System.out.println(actieveTeam + " heeft gewonnen met " + team1.getScore() + " punten.\nWe zien jullie terug in de Finale.\n***Podium draait om***");
+		System.out.println(actieveTeam + " heeft gewonnen met " + team1.getScore() + " punten.\n\nWe zien jullie terug in de Finale.\n\n***Podium draait om***\n\n");
 		Lingo.pause(2000);
 		
 		finale(actieveTeam, scanner);
@@ -192,18 +193,40 @@ public class Lingo {
 	public static void finale(Team actieveTeam, Scanner scanner) {
 		actieveTeam.beginFinale();
 		for (int i = 0; i < 5; i++) {
-			if (!speelRonde(scanner, woordenLijst.remove(0))) {
-				finaleCounter = 6;			
+			String inputWoord = woordenLijst.remove(0);
+			if (!speelRonde(scanner, inputWoord)) {
+				finaleCounter = 6;
+				System.out.println("Helaas, ook niet geraden.\nHet woord was " + inputWoord.toUpperCase());
+			} else {
+				System.out.println("Dat is goed!");
 			}
+			
+			System.out.println(actieveTeam.getKaart());
+			
 			outer:
 			for (int j = 0; j < finaleCounter; j++) {
 				System.out.println("Jullie moeten nog " + (finaleCounter - j) + " ballen pakken!");
+				Lingo.pause(1000);
+				
+				System.out.println("Voer iets in om een bal te pakken");
+				while (!scanner.hasNext()) {}
+				scanner.next();
+				
 				int result = actieveTeam.pakFinaleBal();
 				System.out.println(actieveTeam.getKaart());
 				
 				switch (result) {
 				case 0	:	break outer;
 				case 1	:	System.out.println("Helaas, Lingo.... Jullie mogen de volgende keer terugkomen.");
+							try {
+								Scanner s = new Scanner(new File("LingoScores.txt"));
+								String[] highscore = s.nextLine().split("-");
+								s.close();
+								System.out.println("Highscore is " + highscore[0] + " punten van " + highscore[1]);
+							} catch (FileNotFoundException FNFE) {
+								System.out.println("Highscore-lijst niet gevonden!");
+							}
+							
 							return;
 				case 2	:	continue;
 				}
@@ -214,6 +237,31 @@ public class Lingo {
 				System.out.println("Voer D in om door te gaan");
 				if (!scanner.next().equalsIgnoreCase("d")) {
 					System.out.println("Jullie gaan naar huis met " + actieveTeam.getScore() + " punten!");
+					String[] highscore = new String[2];
+					try {
+						Scanner s = new Scanner(new File("LingoScores.txt"));
+						highscore = s.nextLine().split("-");
+						s.close();
+						if (actieveTeam.getScore() > Integer.valueOf(highscore[1])) {
+							try{ 
+								PrintWriter writer = new PrintWriter("LingoScores", "UTF-8");
+								System.out.println("Highscore!, voer je naam in!");
+								writer.println(scanner.next() + "-" + actieveTeam.getScore());
+								writer.close();
+							} catch (UnsupportedEncodingException UCE) {
+								System.out.println("Onbekende Error!");
+							}
+							
+						} else {
+							System.out.println("Highscore is " + highscore[1] + " punten van " + highscore[0]);
+						}
+					} catch (FileNotFoundException FNFE) {
+						System.out.println("Highscore-lijst niet gevonden!");
+					}
+					
+					
+					
+					
 					return;
 				}
 			} else {

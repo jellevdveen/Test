@@ -110,8 +110,13 @@ public class Team {
 
 	
 	public void beginFinale() {
+		System.out.println("We maken een nieuwe kaart!");
 		teamKaart = new FinaleKaart(team1);
+		System.out.println(getKaart());
+		Lingo.pause(1000);
 		teamKaart.streepBeginWeg();
+		System.out.println(getKaart());
+		Lingo.pause(1000);
 		teamBak = new FinaleBallenBak(team1);
 	}
 	
@@ -119,8 +124,9 @@ public class Team {
 		int gepakteBal = ((FinaleBallenBak)teamBak).trekFinaleBal();
 		switch (gepakteBal) {
 		case -1 :	return 0;
-		default	:	teamKaart.streepWeg(gepakteBal);
-					System.out.println("Het is bal " + gepakteBal);
+		default	:	System.out.println("Het is bal " + gepakteBal);
+					teamKaart.streepWeg(gepakteBal);
+					Lingo.pause(1000);
 		}
 		if (teamKaart.checkLingo()) {
 			return 1;
